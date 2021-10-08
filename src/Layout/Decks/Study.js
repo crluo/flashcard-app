@@ -89,13 +89,31 @@ function Study() {
     // if a deck has less than 3 cards, user cannot study the deck and is prompted to add more cards
     if (cards.length < 3) {
         return (
-            <div>
-                <h2>Study: {deck.name}</h2>
-                <h3>Not enough cards.</h3>
-                <p>You need at least 3 cards to study. There are {cards.length} in this deck.</p>
-                <AddCardsBtn deckId={deckId}/>
-            </div>
-        )
+          <div>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <Link to="/">
+                    <span class="oi oi-home mr-2"></span>Home
+                  </Link>
+                </li>
+                <li class="breadcrumb-item">
+                  <Link to={`/decks/${deckId}`}>{deck.name}</Link>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Study
+                </li>
+              </ol>
+            </nav>
+            <h2>Study: {deck.name}</h2>
+            <h3>Not enough cards.</h3>
+            <p>
+              You need at least 3 cards to study. There are {cards.length} in
+              this deck.
+            </p>
+            <AddCardsBtn deckId={deckId} />
+          </div>
+        );
     } else if (cards.length >= 3) {
         return (
           <div>

@@ -4,6 +4,11 @@ import StudyBtn from "./DeckButtons/StudyBtn"
 import DeleteDeckBtn from "./DeckButtons/DeleteDeckBtn"
 import { listDecks } from "../../utils/api"
 
+/**
+ * 
+ * Displays all decks
+ */
+
 export default function DisplayDecks() {
     const [ decks, setDecks ] = useState([]);
 
@@ -21,26 +26,20 @@ export default function DisplayDecks() {
         listDecks().then(setDecks);
     }
 
-    function DeckList() {
-        return decks.map((deck) => {
-            return (
-                <div>
-                    <div className="card">
-                        <div className="card-body">
-                            <h5 className="card-title">{deck.name}</h5>
-                            <h6 className="card-subtitle mb-2 text-muted">{deck.cards.length} cards</h6>
-                            <p className="card-text">{deck.description}</p>
-                            <ViewBtn deckId={deck.id}/>
-                            <StudyBtn deckId={deck.id}/>
-                            <DeleteDeckBtn refreshDecks={refreshDecks} deckId={deck.id}/>
-                        </div>
+    return decks.map((deck) => {
+        return (
+            <div>
+                <div className="card">
+                    <div className="card-body">
+                        <h5 className="card-title">{deck.name}</h5>
+                        <h6 className="card-subtitle mb-2 text-muted">{deck.cards.length} cards</h6>
+                        <p className="card-text">{deck.description}</p>
+                        <ViewBtn deckId={deck.id}/>
+                        <StudyBtn deckId={deck.id}/>
+                        <DeleteDeckBtn refreshDecks={refreshDecks} deckId={deck.id}/>
                     </div>
                 </div>
-            )
-        })
-    }
-
-    return (
-        <DeckList />
-    )
+            </div>
+        );
+    });
 }

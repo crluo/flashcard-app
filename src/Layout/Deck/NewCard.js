@@ -26,7 +26,7 @@ export default function NewCard() {
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><Link to="/"><span class="oi oi-home mr-2"></span>Home</Link></li>
-                        <li class="breadcrumb-item"><Link to={`/decks/${deckId}`}>Deck {deck.name}</Link></li>
+                        <li class="breadcrumb-item"><Link to={`/decks/${deckId}`}>{deck.name}</Link></li>
                         <li class="breadcrumb-item active" aria-current="page">Add Card</li>
                     </ol>
                 </nav>

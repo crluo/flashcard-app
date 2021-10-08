@@ -4,15 +4,16 @@ import { createCard, updateCard } from "../../utils/api";
 
 export default function CardForm({ deckId, formData, setFormData, isNew }) {
     const history = useHistory();
-    const abortController = new AbortController();
+    // const abortController = new AbortController();
 
     function handleSubmit(event) {
         event.preventDefault();
+        event.stopPropagation();
         if (isNew) {
-          createCard(deckId, formData, abortController.signal)
+          createCard(deckId, formData) //, abortController.signal)
             .then(() => history.push(`/decks/${deckId}`))
         } else if (!isNew) {
-          updateCard(formData, abortController.signal)
+          updateCard(formData)//, abortController.signal)
             .then(() => history.push(`/decks/${deckId}`))
         }
     }
