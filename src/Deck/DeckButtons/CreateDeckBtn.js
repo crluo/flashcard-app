@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 
-function Button() {
+function CreateDeckBtn() {
     return (
         <Link to="/decks/new">
             <button type="button" className="btn btn-secondary mb-4">
@@ -9,14 +9,7 @@ function Button() {
                 Create Deck
             </button>
         </Link>
-    )
-}
-
-function CreateDeckBtn() {
-    
-    return (
-        <Button />
-    )
+    );
 }
 
 export default CreateDeckBtn;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom";
-import { readDeck } from "../../utils/api";
-import AddCardsBtn from "../Deck/CardButtons/AddCardsBtn";
+import { readDeck } from "../utils/api";
+import AddCardsBtn from "../Card/CardButtons/AddCardsBtn";
 
 function Study() {
     const [ deck, setDeck ] = useState({});
@@ -23,15 +23,8 @@ function Study() {
     }, [deckId]);
 
     function Card() {
-        // array of card front content
-        const cardFronts = cards.map((card) => {
-            return card.front;
-        });
-
-        // array of card back content
-        const cardBacks = cards.map((card) => {
-            return card.back;
-        })
+        const cardFronts = cards.map((card) => card.front);
+        const cardBacks = cards.map((card) => card.back);
 
         function handleFlipClick() {
             setFlip(!flip);
@@ -53,14 +46,13 @@ function Study() {
         // displays the front or back of the card depending on whether it is flipped
         if (!flip) {
             return (
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Card {(cardIndex + 1)} of {cards.length}</h5>
-                    <p class="card-text">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Card {(cardIndex + 1)} of {cards.length}</h5>
+                    <p className="card-text">
                       {cardFronts[cardIndex]}
                     </p>
-                    
-                    <button type="button" class="btn btn-secondary mr-2" onClick={handleFlipClick}>
+                    <button type="button" className="btn btn-secondary mr-2" onClick={handleFlipClick}>
                       Flip
                     </button>
                   </div>
@@ -68,16 +60,16 @@ function Study() {
             )
         } else if (flip) {
             return (
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Card {(cardIndex + 1)} of {cards.length}</h5>
-                    <p class="card-text">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Card {(cardIndex + 1)} of {cards.length}</h5>
+                    <p className="card-text">
                       {cardBacks[cardIndex]}
                     </p>
-                    <button type="button" class="btn btn-secondary mr-2" onClick={handleFlipClick}>
+                    <button type="button" className="btn btn-secondary mr-2" onClick={handleFlipClick}>
                       Flip
                     </button>
-                    <button type="button" class="btn btn-primary mr-2" onClick={handleNextClick}>
+                    <button type="button" className="btn btn-primary mr-2" onClick={handleNextClick}>
                       Next
                     </button>
                   </div>
@@ -86,25 +78,23 @@ function Study() {
         }
     }
 
+    function BreadCrumb() {
+      return(
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item"><Link to="/"><span className="oi oi-home mr-2"></span>Home</Link></li>
+            <li className="breadcrumb-item"><Link to={`/decks/${deckId}`}>{deck.name}</Link></li>
+            <li className="breadcrumb-item active" aria-current="page">Study</li>
+          </ol>
+        </nav>
+      );
+    }
+
     // if a deck has less than 3 cards, user cannot study the deck and is prompted to add more cards
     if (cards.length < 3) {
         return (
           <div>
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                  <Link to="/">
-                    <span class="oi oi-home mr-2"></span>Home
-                  </Link>
-                </li>
-                <li class="breadcrumb-item">
-                  <Link to={`/decks/${deckId}`}>{deck.name}</Link>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                  Study
-                </li>
-              </ol>
-            </nav>
+            <BreadCrumb />
             <h2>Study: {deck.name}</h2>
             <h3>Not enough cards.</h3>
             <p>
@@ -117,13 +107,7 @@ function Study() {
     } else if (cards.length >= 3) {
         return (
           <div>
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><Link to="/"><span class="oi oi-home mr-2"></span>Home</Link></li>
-                <li class="breadcrumb-item"><Link to={`/decks/${deckId}`}>{deck.name}</Link></li>
-                <li class="breadcrumb-item active" aria-current="page">Study</li>
-              </ol>
-            </nav>
+            <BreadCrumb />
             <h2 className="mb-4">Study: {deck.name}</h2>
             <Card />
           </div>

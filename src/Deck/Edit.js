@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
-import { readDeck, updateDeck } from "../../utils/api";
+import { readDeck, updateDeck } from "../utils/api";
 
-export default function EditDeck() {
+function DeckEdit() {
     const { deckId } = useParams();
     const history = useHistory();
     const [deck, setDeck] = useState({});
@@ -19,32 +19,22 @@ export default function EditDeck() {
         async function fetchDeck() {
             const currentDeck = await readDeck(deckId, abortController.signal);
             setDeck(currentDeck);
-            setFormData( {
-                name: currentDeck.name,
-                description: currentDeck.description
-            });
+            setFormData(currentDeck);
         }
         fetchDeck();
     }, [deckId])
 
-    function handleDeckInputChange({ target }) {
+    function handleInputChange({ target }) {
         setFormData( {
             ...formData,
-            [target.name]: [target.value]
+            [target.name]: target.value
         });
     }
 
-    function handleDeckSubmit(event) {
+    function handleSubmit(event) {
         event.preventDefault();
-        const abortController = new AbortController();
-        deck.name = formData.name;
-        deck.description = formData.description;
-        async function deckUpdate() {
-            await updateDeck(deck, abortController.signal);
-            setDeck(deck);
-        }
-        deckUpdate();
-        history.push(`/decks/${deckId}`)
+        event.stopPropagation();
+        updateDeck(formData).then(() => history.push(`/decks/${deckId}`));
     }
 
     function handleCancel() {
@@ -54,19 +44,19 @@ export default function EditDeck() {
     return (
       <div>
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><Link to="/"><span class="oi oi-home mr-2"></span>Home</Link></li>
-                <li class="breadcrumb-item"><Link to={`/decks/${deckId}`}>{deck.name}</Link></li>
-                <li class="breadcrumb-item active" aria-current="page">Edit Deck</li>
+            <ol className="breadcrumb">
+                <li className="breadcrumb-item"><Link to="/"><span className="oi oi-home mr-2"></span>Home</Link></li>
+                <li className="breadcrumb-item"><Link to={`/decks/${deckId}`}>{deck.name}</Link></li>
+                <li className="breadcrumb-item active" aria-current="page">Edit Deck</li>
             </ol>
         </nav>
-        <form>
+        <form onSubmit={handleSubmit}>
           <h2>Edit Deck</h2>
           <div className="form-group">
             <label htmlFor="deck-name">Name</label>
             <input
               value={formData.name}
-              onChange={handleDeckInputChange}
+              onChange={handleInputChange}
               className="form-control"
               type="text"
               name="name"
@@ -78,7 +68,7 @@ export default function EditDeck() {
             <label htmlFor="deck-description">Description</label>
             <textarea
               value={formData.description}
-              onChange={handleDeckInputChange}
+              onChange={handleInputChange}
               className="form-control"
               type="textarea"
               name="description"
@@ -95,7 +85,6 @@ export default function EditDeck() {
           <button
             type="submit"
             className="btn btn-primary"
-            onSubmit={handleDeckSubmit}
           >
             Submit
           </button>
@@ -103,3 +92,5 @@ export default function EditDeck() {
       </div>
     );
 }
+
+export default DeckEdit;
